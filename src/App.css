@@ -2,3 +2,29 @@
     content: '';
     width: 600px;
 }
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+
+.gallery-header {
+    background-color: #5ebabd;
+    margin: 0;
+    padding: 7px;
+    height: 4rem;
+    box-sizing: border-box;
+}
+
+.gallery-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#gallery-input-file, #gallery-modal {
+    background-color: #255557;
+    color: #fff;
+}
