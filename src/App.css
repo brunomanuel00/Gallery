@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-#gallery-input-file, #gallery-modal {
+#gallery-input-file, #gallery-modal, #gallery-button-add {
     background-color: #255557;
     color: #fff;
 }

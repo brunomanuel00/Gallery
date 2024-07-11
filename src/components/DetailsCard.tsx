@@ -1,15 +1,19 @@
 import { Button, CardContent, Stack, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import React from 'react';
+import { DetailsPhoto } from './types/Child-Tools';
 
-export default function DetailsCard() {
+const DetailsCard: React.FC<DetailsPhoto> = ({ photoDetails, handleDelete, handleEdit }) => {
 
-    function handleEdit(e: any) {
+    function handlePhotoEdit(e: any) {
         e.stopPropagation();
+        handleEdit(photoDetails.id, photoDetails.title, photoDetails.description)
 
     }
-    function handleDelete(e: any) {
+    function handlePhotoDelete(e: any) {
         e.stopPropagation();
+        handleDelete(photoDetails.id)
 
     }
 
@@ -17,22 +21,10 @@ export default function DetailsCard() {
         <div style={{ height: '300px' }} >
             <CardContent sx={{ height: '240px', overflow: 'scroll', boxSizing: 'border-box' }}>
                 <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                    {photoDetails.title ? photoDetails.title : 'Empty title'}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: '10px' }} color="text.secondary" >
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    specie
+                    {photoDetails.description ? photoDetails.description : 'Oh no'}
                 </Typography>
             </CardContent>
             <Stack direction="row"
@@ -41,10 +33,10 @@ export default function DetailsCard() {
                 spacing={2}
                 marginTop={2}
             >
-                <Button onClick={handleEdit} variant="contained" color='warning' startIcon={<ModeEditIcon />}>
+                <Button onClick={handlePhotoEdit} variant="contained" color='warning' startIcon={<ModeEditIcon />}>
                     Edit
                 </Button>
-                <Button onClick={handleDelete} variant="contained" color='error' startIcon={<DeleteIcon />}>
+                <Button onClick={handlePhotoDelete} variant="contained" color='error' startIcon={<DeleteIcon />}>
                     Delete
                 </Button>
             </Stack>
@@ -54,3 +46,5 @@ export default function DetailsCard() {
     )
 
 }
+
+export default DetailsCard;

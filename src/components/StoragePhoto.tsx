@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
+import NavBar from './NavBar';  // Import the NavBar component
 
 interface Photo {
     id: number;
@@ -15,25 +16,19 @@ const StoragePhoto: React.FC = () => {
         setPhotos(storedPhotos);
     }, []);
 
-    const handlePhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const newPhoto: Photo = {
-                    id: Date.now(),
-                    title: 'New Photo',
-                    description: 'Add a description',
-                    image: reader.result,
-                };
-                setPhotos((prevPhotos) => {
-                    const updatedPhotos = [...prevPhotos, newPhoto];
-                    localStorage.setItem('photos', JSON.stringify(updatedPhotos));
-                    return updatedPhotos;
-                });
-            };
-            reader.readAsDataURL(file);
-        }
+    const handleAddPhoto = (title: string, description: string, image: string | ArrayBuffer | null) => {
+        const newPhoto: Photo = {
+            id: Date.now(),
+            title,
+            description,
+            image,
+        };
+
+        setPhotos((prevPhotos) => {
+            const updatedPhotos = [...prevPhotos, newPhoto];
+            localStorage.setItem('photos', JSON.stringify(updatedPhotos));
+            return updatedPhotos;
+        });
     };
 
     const handlePhotoEdit = (id: number, title: string, description: string) => {
@@ -59,7 +54,7 @@ const StoragePhoto: React.FC = () => {
 
     return (
         <div>
-            <input type="file" onChange={handlePhotoUpload} />
+            <NavBar onAddPhoto={handleAddPhoto} />
             <div>
                 {photos.map((photo) => (
                     <div key={photo.id}>

@@ -1,9 +1,8 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 const VisuallyHiddenInput = styled('input')({
@@ -19,23 +18,62 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const style = {
+  display: 'flex',
+  flexDirection: 'column',
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: '2px solid #255557',
   boxShadow: 24,
   p: 4,
 };
 
+interface AddPhotoFormProps {
+  onAddPhoto: (title: string, description: string, image: string | ArrayBuffer | null) => void;
+}
 
-export default function NavBar() {
-  // const handle = handleUpload();
+const NavBar: React.FC<AddPhotoFormProps> = ({ onAddPhoto }) => {
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState<string | ArrayBuffer | null>(null);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    if (name === 'title') setTitle(value);
+    if (name === 'description') setDescription(value);
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (!image) {
+      alert('Please select a file before submitting.');
+      return;
+    }
+    onAddPhoto(title, description, image);
+    setTitle('');
+    setDescription('');
+    setImage(null);
+    handleClose();
+  };
+
   return (
     <>
       <header className='gallery-header'>
@@ -53,6 +91,9 @@ export default function NavBar() {
                 fullWidth
                 id="outlined-size-small"
                 size="small"
+                name="title"
+                value={title}
+                onChange={handleInputChange}
               />
               <TextField
                 id="outlined-multiline-flexible"
@@ -61,6 +102,9 @@ export default function NavBar() {
                 multiline
                 fullWidth
                 maxRows={4}
+                name="description"
+                value={description}
+                onChange={handleInputChange}
               />
               <Button
                 component='label'
@@ -73,15 +117,15 @@ export default function NavBar() {
                 startIcon={<CloudUploadIcon />}
               >
                 Upload file
-                <VisuallyHiddenInput type="file" />
+                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
               </Button>
-
-              <Button variant="contained">Add</Button>
+              <Button onClick={handleSubmit} variant="contained" id='gallery-button-add' sx={{ marginTop: 1 }}>Add</Button>
             </Box>
           </Modal>
-
         </nav>
       </header >
     </>
   )
 }
+
+export default NavBar;
