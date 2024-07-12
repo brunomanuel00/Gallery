@@ -1,7 +1,7 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Button, TextField } from '@mui/material';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { AddPhotoFormProps, VisuallyHiddenInput, style } from './types/modal-tools';
+import { AddPhotoFormProps, VisuallyHiddenInput, style } from './utils/modal-tools';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -42,13 +42,34 @@ const ModalDetails: React.FC<AddPhotoFormProps> = ({
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         if (selectedFile) {
+            // Validar tipo de archivo
+            if (!selectedFile.type.startsWith('image/')) {
+                alert('Please select an image file (JPG or PNG).');
+                event.target.value = ''; // Limpiar el input file seleccionado
+                setImage(null); // Reiniciar el estado
+                return;
+            }
+
+            // Validar extensiones específicas si es necesario
+            const allowedExtensions = ['image/jpeg', 'image/png'];
+            if (!allowedExtensions.includes(selectedFile.type)) {
+                alert('Only JPG and PNG files are allowed.');
+                event.target.value = ''; // Limpiar el input file seleccionado
+                setImage(null); // Reiniciar el estado
+                return;
+            }
+
+            // Leer el contenido del archivo como URL base64
             const reader = new FileReader();
             reader.onload = () => {
-                setImage(reader.result);
+                if (reader.result) {
+                    setImage(reader.result); // Establecer el estado como resultado de FileReader
+                }
             };
             reader.readAsDataURL(selectedFile);
         }
     };
+
     function stop(event: React.MouseEvent) {
         event.stopPropagation()
     }
@@ -63,7 +84,24 @@ const ModalDetails: React.FC<AddPhotoFormProps> = ({
             if (!image) {
                 alert('Please select a file before submitting.');
                 return;
+            } else if (title === '' || description === '') {
+                alert(`Please add a ${title === '' ? 'title' : 'description'}.`);
+                return;
             }
+
+            // Calcular tamaño estimado de la imagen en base64
+            const imageSize = image ? String(image).length * 2 / 1024 : 0;
+
+            // Verificar espacio disponible en localStorage
+            const totalSpace = 5 * 1024 * 1024; // Ejemplo de 5 MB de espacio total en localStorage
+            const usedSpace = Object.keys(localStorage).reduce((total, key) => total + (localStorage[key].length * 2), 0);
+            const availableSpace = totalSpace - usedSpace;
+
+            if (availableSpace < imageSize) {
+                alert('Not enough space available in localStorage to add this photo.');
+                return;
+            }
+
             if (onAddPhoto) {
                 onAddPhoto(title, description, image);
             }

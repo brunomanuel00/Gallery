@@ -2,7 +2,7 @@ import { Button, CardContent, Stack, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import React, { useState } from 'react';
-import { DetailsPhoto, Photo } from './types/Child-Tools';
+import { DetailsPhoto, Photo } from './utils/Child-Tools';
 import ModalDetails from './ModalDetails';
 
 const DetailsCard: React.FC<DetailsPhoto> = ({ photoDetails, handleDelete, handleEdit }) => {

@@ -4,7 +4,7 @@ import CardPhoto from './components/CardPhoto'
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
-import { Photo } from './components/types/Child-Tools'
+import { Photo } from './components/utils/Child-Tools'
 
 function App() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -14,6 +14,7 @@ function App() {
     const storedPhotos = JSON.parse(localStorage.getItem('photos') || '[]') as Photo[];
     setPhotos(storedPhotos);
   }, []);
+
   const handleToggle = (index: number) => {
     setSelectedIndex(index === selectedIndex ? null : index);
   };
@@ -77,4 +78,5 @@ function App() {
     </>
   )
 }
+
 export default App

@@ -17,6 +17,7 @@ export interface Photo {
 
 export interface PhotoSRC {
     photoSRC: string
+    photoTitle: string;
 }
 
 export interface DetailsPhoto {

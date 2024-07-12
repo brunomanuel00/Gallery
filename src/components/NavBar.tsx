@@ -1,4 +1,4 @@
-import { AddPhotoFormProps } from './types/modal-tools';
+import { AddPhotoFormProps } from './utils/modal-tools';
 import ModalDetails from './ModalDetails';
 
 const NavBar: React.FC<AddPhotoFormProps> = ({ onAddPhoto, buttonText = 'Open modal', editMode = true }) => {
