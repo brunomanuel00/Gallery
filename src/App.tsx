@@ -57,15 +57,16 @@ function App() {
 
   return (
     <>
-      <NavBar onAddPhoto={handleAddPhoto} />
+      <NavBar onAddPhoto={handleAddPhoto} buttonText='Add Photo' editMode={false} />
       <Box sx={{ flexGrow: 1, marginTop: 2, padding: '0 10px', }}>
         <Grid className='container_all' container spacing={1} >
           {photos.map((item, index) => (
-            <Grid xs={12} sm={4} md={4} lg={4} xl={4} key={index}>
+            <Grid xs={12} sm={6} md={6} lg={4} xl={4} key={index}>
               <CardPhoto key={index}
                 index={index}
                 isSelected={selectedIndex === index}
-                onToggle={handleToggle} photo={item}
+                onToggle={handleToggle}
+                photo={item}
                 handleDelete={handlePhotoDelete}
                 handleEdit={handlePhotoEdit}
               />

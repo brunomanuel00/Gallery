@@ -1,16 +1,31 @@
 import { Button, CardContent, Stack, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import React from 'react';
-import { DetailsPhoto } from './types/Child-Tools';
+import React, { useState } from 'react';
+import { DetailsPhoto, Photo } from './types/Child-Tools';
+import ModalDetails from './ModalDetails';
 
 const DetailsCard: React.FC<DetailsPhoto> = ({ photoDetails, handleDelete, handleEdit }) => {
 
-    function handlePhotoEdit(e: any) {
-        e.stopPropagation();
-        handleEdit(photoDetails.id, photoDetails.title, photoDetails.description)
+    const [modalOpen, setModalOpen] = useState(false);
+    const [photoEditDetails, setPhotoEditDetails] = useState<Photo | null>(null);
 
-    }
+    const handlePhotoEdit = (e: React.MouseEvent, photo: Photo) => {
+        e.stopPropagation();
+        setPhotoEditDetails(photo);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setPhotoEditDetails(null);
+    };
+
+    const handleEditPhoto = (id: number, title: string, description: string) => {
+        handleEdit(id, title, description);
+        handleCloseModal();
+    };
+
     function handlePhotoDelete(e: any) {
         e.stopPropagation();
         handleDelete(photoDetails.id)
@@ -33,14 +48,21 @@ const DetailsCard: React.FC<DetailsPhoto> = ({ photoDetails, handleDelete, handl
                 spacing={2}
                 marginTop={2}
             >
-                <Button onClick={handlePhotoEdit} variant="contained" color='warning' startIcon={<ModeEditIcon />}>
+                <Button onClick={(e) => handlePhotoEdit(e, photoDetails)} variant="contained" color='warning' startIcon={<ModeEditIcon />}>
                     Edit
                 </Button>
                 <Button onClick={handlePhotoDelete} variant="contained" color='error' startIcon={<DeleteIcon />}>
                     Delete
                 </Button>
             </Stack>
-
+            {modalOpen && photoEditDetails && (
+                <ModalDetails
+                    photoEdit={photoEditDetails}
+                    onEditPhoto={handleEditPhoto}
+                    editMode={true}
+                    buttonText="Edit Photo"
+                />
+            )}
         </div>
 
     )
