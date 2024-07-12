@@ -42,28 +42,25 @@ const ModalDetails: React.FC<AddPhotoFormProps> = ({
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         if (selectedFile) {
-            // Validar tipo de archivo
             if (!selectedFile.type.startsWith('image/')) {
                 alert('Please select an image file (JPG or PNG).');
-                event.target.value = ''; // Limpiar el input file seleccionado
-                setImage(null); // Reiniciar el estado
+                event.target.value = '';
+                setImage(null);
                 return;
             }
 
-            // Validar extensiones específicas si es necesario
             const allowedExtensions = ['image/jpeg', 'image/png'];
             if (!allowedExtensions.includes(selectedFile.type)) {
                 alert('Only JPG and PNG files are allowed.');
-                event.target.value = ''; // Limpiar el input file seleccionado
-                setImage(null); // Reiniciar el estado
+                event.target.value = '';
+                setImage(null);
                 return;
             }
 
-            // Leer el contenido del archivo como URL base64
             const reader = new FileReader();
             reader.onload = () => {
                 if (reader.result) {
-                    setImage(reader.result); // Establecer el estado como resultado de FileReader
+                    setImage(reader.result);
                 }
             };
             reader.readAsDataURL(selectedFile);
@@ -89,11 +86,9 @@ const ModalDetails: React.FC<AddPhotoFormProps> = ({
                 return;
             }
 
-            // Calcular tamaño estimado de la imagen en base64
             const imageSize = image ? String(image).length * 2 / 1024 : 0;
 
-            // Verificar espacio disponible en localStorage
-            const totalSpace = 5 * 1024 * 1024; // Ejemplo de 5 MB de espacio total en localStorage
+            const totalSpace = 5 * 1024 * 1024;
             const usedSpace = Object.keys(localStorage).reduce((total, key) => total + (localStorage[key].length * 2), 0);
             const availableSpace = totalSpace - usedSpace;
 

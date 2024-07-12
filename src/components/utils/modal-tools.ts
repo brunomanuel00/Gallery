@@ -27,7 +27,6 @@ export const style = {
     p: 4,
 };
 
-
 export interface AddPhotoFormProps {
     onAddPhoto?: (title: string, description: string, image: string | ArrayBuffer | null) => void;
     onEditPhoto?: (id: number, title: string, description: string) => void;

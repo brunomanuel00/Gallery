@@ -55,7 +55,6 @@ function App() {
     });
   };
 
-
   return (
     <>
       <NavBar onAddPhoto={handleAddPhoto} buttonText='Add Photo' editMode={false} />

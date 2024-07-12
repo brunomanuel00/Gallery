@@ -5,7 +5,6 @@ import DetailsCard from './DetailsCard';
 import { ChildProps, PhotoSRC } from './utils/Child-Tools';
 import React from 'react';
 
-
 const Picture: React.FC<PhotoSRC> = ({ photoSRC, photoTitle }) => {
 
     return (
@@ -19,8 +18,6 @@ const Picture: React.FC<PhotoSRC> = ({ photoSRC, photoTitle }) => {
         </CardActionArea>
     )
 }
-
-
 
 const CardPhoto: React.FC<ChildProps> = ({ index, isSelected, onToggle, photo, handleDelete, handleEdit }) => {
 
